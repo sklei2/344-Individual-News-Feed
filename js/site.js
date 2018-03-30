@@ -34,7 +34,7 @@ function loadJson(url) {
 	$.get({
 		url: url,
 		success: function(data) {
-				
+			var myData = data;
 		}
 	});
 }
