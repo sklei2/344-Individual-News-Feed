@@ -34,7 +34,13 @@ function loadJson(url) {
 	$.get({
 		url: url,
 		success: function(data) {
-			var myData = data;
+			var container = document.getElementById("json-info-container");
+			container.innerText = data;
+
+		},
+		error: function (data) {
+			var container = document.getElementById("json-info-container");
+			container.innerText = "Error loading Content";
 		}
 	});
 }
