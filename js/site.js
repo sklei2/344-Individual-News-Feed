@@ -35,7 +35,10 @@ function loadJson(url) {
 		url: url,
 		success: function(data) {
 			var container = document.getElementById("json-info-container");
-			container.innerText = data;
+			var name = data.name;
+			var age = data.age;
+			var hometown = data.hometown;
+			container.innerText = "Name: " + name + "\nAge: " + age + "\nHometown: " + hometown;
 
 		},
 		error: function (data) {
