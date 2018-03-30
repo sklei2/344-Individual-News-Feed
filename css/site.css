@@ -1,0 +1,44 @@
+body {
+	background-color: #f1f1f1
+}
+
+footer {
+	margin-top: 5%;
+}
+
+.content {
+	margin-top:2%;
+	background-color: #ffffff;
+}
+
+label {
+	font-weight: bold;
+}
+
+.app-content {
+	display: flex;
+	justify-content: space-between;
+}
+	
+.tall-options-container {
+	display: flex;
+	flex-direction: column;
+	height:80%;
+	width: 100%;
+	overflow-y: scroll;
+}
+	.tall-options-container a {
+		text-decoration: none;
+		border-bottom: 1px solid #cccccc;
+		padding-bottom: .1em;
+		padding-top: .1em;
+		text-align: center;
+	}
+
+.info-container {
+	width: 80%;
+	min-height: 200px;
+	max-height: 20%;
+	border: 1px solid black;
+	background-color: white;
+}
