@@ -1,6 +1,6 @@
 window.addEventListener('load', function() {
 	
-	loadRSSFeed("http://www.espn.com/espn/rss/HTML/news");
+	loadRSSFeed("http://www.espn.com/espn/rss/NHL/news");
 	
 	function loadRSSFeed(url) {
 		document.getElementById("rss-reader").innerText = "Loading RSS Feed";
