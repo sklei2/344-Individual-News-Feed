@@ -42,3 +42,7 @@ label {
 	border: 1px solid black;
 	background-color: white;
 }
+
+#rss-reader {
+	overflow-y: scroll;
+}
