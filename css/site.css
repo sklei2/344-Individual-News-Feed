@@ -2,6 +2,15 @@ body {
 	background-color: #f1f1f1
 }
 
+nav {
+	padding-top: 1px;
+	padding-bottom: 1px;
+	padding-left: 1%;
+	padding-right:1%;
+	color: #eeeeee;
+	background-color: #343a40;
+}
+
 footer {
 	margin-top: 5%;
 }
@@ -16,35 +25,29 @@ label {
 }
 
 .app-content {
+	padding-top: 5%;
 	display: flex;
 	justify-content: space-between;
 }
 	
-.tall-options-container {
-	display: flex;
-	flex-direction: column;
-	height:80%;
-	width: 100%;
-	overflow-y: scroll;
+.filters-container-push {
+	height:100%;
+	width: 30%;	
+	padding-top: 3px;
+	padding-left: 5px;
 }
-	.tall-options-container a {
-		text-decoration: none;
-		border-bottom: 1px solid #cccccc;
-		padding-bottom: .1em;
-		padding-top: .1em;
-		text-align: center;
-	}
+
+.filters-container {
+	width: 20%;
+	height: 20%;
+	border: 1px solid black;
+	padding-left: 5px;
+}
 
 .info-container {
-	width: 80%;
-	min-height: 200px;
-	max-height: 600px;
+	width: 65%;
 	border: 1px solid black;
 	background-color: white;
-}
-
-#rss-reader {
-	overflow-y: scroll;
 }
 
 .item {
@@ -62,4 +65,12 @@ label {
 /* not used right now because the descriptions are the same as the titles */
 .item p {
 	padding-top: 0.2em;
+}
+
+.fixed {
+	position: fixed;;
+}
+
+#left-space-push {
+	border:none;
 }

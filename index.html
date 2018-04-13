@@ -1,59 +1,43 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title> REST Homework </title>
+		<title> Individual Newsfeed </title>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="css/site.css">
 		<script src="js/site.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	</head>
 	<body>
+		<nav>
+			<h1> News Feed </h1>
+		</nav>
 		<div class="container content">
-			<h2> Ajax Activity </h2>
-			<p>
-				This activity is to show an understanding and proficiency in 
-				ajax by creating a webpage that will do four things. One, load
-				some information from the server about me. Two, Be able to read 
-				JSON files from the server, both malformed and well formed. Three,
-				read and display an RSS feed. Four, have it so we display random 
-				information	that is continually added whenever the user scrolls
-				to the bottom.
-			</p>
-			<h3> Load Text Information </h3>
-			<div id="load-text-files">			
-				<div id="text-info-dropdown-selection">
-					<select id="text-info-select">
-						<option value="name"> Name </option>
-						<option value="state"> Home State </option>
-						<option value="major"> Major </option>
-						<option value="food"> Favorite Food </option>
-					</select>
-					<button id="load-text-info" onClick="loadTextButtonOnClick(event)"> Load </button>
-				</div>				
-				<div id="text-info-display">
-					<div id="text-info-container" class="info-container">
-
-					</div>
-				</div>
-			</div>
-			<h3> Load JSON Information </h3>
-			<div id="load-json-data">
-				<div id="json-info-selection">
-					<button id="load-good-json" onClick="loadGoodJsonButtonOnClick(event)"> Load Good Json </button>
-					<button id="load-bad-json" onClick="loadBadJsonButtonOnClick(event)"> Load Bad Json </button>
-				</div>
-				<div id="json-info-display">
-					<div id="json-info-container" class="info-container">
-
-					</div>
-				</div>
-			</div>
-			<h3> RSS Reader </h3>
 			<div class="app-content">
+				<div class="filters-container-push">
+				</div>
+				<div class="filters-container fixed">
+					<h3> Filters </h3>
+					<div>
+						<input type="checkbox" id="nhl-checkbox" name='nhl-checkbox'>
+						<label for="nhl-checkbox"> NHL News </label> 
+					</div>
+					<div>
+						<input type="checkbox" id="mlb-checkbox" name='mlb-checkbox'>
+						<label for="mlb-checkbox"> MLB News </label> 
+					</div>
+					<div>
+						<input type="checkbox" id="nfl-checkbox" name='nfl-checkbox'>
+						<label for="nfl-checkbox"> NFL News </label> 
+					</div>
+					<div>
+						<input type="checkbox" id="nba-checkbox" name='nba-checkbox'>
+						<label for="nba-checkbox"> NBA News </label> 	
+					</div>									
+				</div>
 				<div id="rss-reader" class="info-container">
 
 				</div>
-			</div>
+			</div>			
 			<footer>
 				<hr>
 				<p> Created by: Sean Klei </p>
