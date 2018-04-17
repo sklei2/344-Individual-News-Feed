@@ -12,17 +12,15 @@ class newsItem {
 		this.title = xmlItem.querySelector("title").firstChild.nodeValue
 		this.description = xmlItem.querySelector("description").firstChild.nodeValue;
 		this.link = xmlItem.querySelector("link").firstChild.nodeValue;
-		this.pubDate = xmlItem.querySelector("pubDate").firstChild.nodeValue;
+		this.pubDate = new Date(xmlItem.querySelector("pubDate").firstChild.nodeValue);
 		this.sport = sport;
 		this.sportString = getKeyByValue(sport_enum, sport);
 	}
 }
 
-window.addEventListener('load', function() {
-
+window.addEventListener('load', function() {	
 	
-	
-	// Setup our initial data
+	// Setup our variables data
 	var newsFeed = [];
 	var espnUrl = "http://www.espn.com/espn/rss/";
 	var afterSportUrl = "/news"
@@ -90,6 +88,10 @@ window.addEventListener('load', function() {
 
 	function addNewsItem(item) {
 		newsFeed.push(item);
+		function comparerFunction(newsItemA, newsItemB) {
+			return newsItemB.pubDate - newsItemA.pubDate;
+		}
+		newsFeed.sort(comparerFunction);
 	}
 
 	// Drawing HTML
@@ -101,7 +103,7 @@ window.addEventListener('load', function() {
 			var line = '<div class="item">';
 			line += "<img src=img/logo_" + item.sportString + ".png class=logo-img>" 
 			line += "<h2>" + item.title + "</h2>";
-			line += '<p><i>'+ item.pubDate +'</i> - <a href="'+ item.link + '" target="_blank">See original</a></p>';
+			line += '<p><i>'+ item.pubDate.toLocaleString() +'</i> - <a href="'+ item.link + '" target="_blank">See original</a></p>';
 			//title and description are always the same (for some reason) so I'm only including one
 			//line += "<p>"+description+"</p>";
 			line += "</div>";
@@ -112,8 +114,14 @@ window.addEventListener('load', function() {
 	}
 
 	function loadNewsFeed() {
-		document.getElementById("rss-reader").innerHTML = "";
-		appendNewsItems(newsFeed);
+		var rssReader = document.getElementById("rss-reader");
+		if (newsFeed.length > 0) {
+			rssReader.innerHTML = "";
+			appendNewsItems(newsFeed);	
+		} else {
+			rssReader.innerHTML = '<h2 style="text-align: center;">No Stories to Show</h2>';
+		}
+		
 	}
 
 	// Handlers
@@ -125,7 +133,9 @@ window.addEventListener('load', function() {
 			removeSportData(sport_enum[event.target.value]);
 		}
 	}
-	
+
+	// Helpers
+
 });
 
 // helpers
