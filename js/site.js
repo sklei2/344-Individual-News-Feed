@@ -1,4 +1,12 @@
 
+// enum variable for our sports
+var sport_enum = Object.freeze({
+	MLB: 1,
+	NBA: 2,
+	NFL: 3,
+	NHL: 4,
+});
+
 class newsItem {
 	constructor(xmlItem, sport) {
 		this.title = xmlItem.querySelector("title").firstChild.nodeValue
@@ -6,18 +14,13 @@ class newsItem {
 		this.link = xmlItem.querySelector("link").firstChild.nodeValue;
 		this.pubDate = xmlItem.querySelector("pubDate").firstChild.nodeValue;
 		this.sport = sport;
+		this.sportString = getKeyByValue(sport_enum, sport);
 	}
 }
 
 window.addEventListener('load', function() {
 
-	// enum variable for our sports
-	var sport_enum = Object.freeze({
-		MLB: 1,
-		NBA: 2,
-		NFL: 3,
-		NHL: 4,
-	});
+	
 	
 	// Setup our initial data
 	var newsFeed = [];
@@ -72,8 +75,17 @@ window.addEventListener('load', function() {
 		}
 	}
 
+	function addSportData(sport) {
+		var sportString = getKeyByValue(sport_enum, sport);
+		var url = espnUrl + sportString + afterSportUrl;
+		loadRSSFeed(url, sport, function() {
+			loadNewsFeed();
+		});
+	}
+
 	function removeSportData(sport) {
 		newsFeed = newsFeed.filter(item => item.sport != sport);
+		loadNewsFeed();
 	}
 
 	function addNewsItem(item) {
@@ -87,6 +99,7 @@ window.addEventListener('load', function() {
 		for (var i = 0; i < items.length; i++) {
 			var item = items[i];
 			var line = '<div class="item">';
+			line += "<img src=img/logo_" + item.sportString + ".png class=logo-img>" 
 			line += "<h2>" + item.title + "</h2>";
 			line += '<p><i>'+ item.pubDate +'</i> - <a href="'+ item.link + '" target="_blank">See original</a></p>';
 			//title and description are always the same (for some reason) so I'm only including one
@@ -99,25 +112,23 @@ window.addEventListener('load', function() {
 	}
 
 	function loadNewsFeed() {
-		var html = "";
-		for (var i = 0; i < newsFeed.length; i++) {
-			var item = newsFeed[i];
-			var line = '<div class="item">';
-			line += "<h2>" + item.title + "</h2>";
-			line += '<p><i>'+ item.pubDate +'</i> - <a href="'+ item.link + '" target="_blank">See original</a></p>';
-			//title and description are always the same (for some reason) so I'm only including one
-			//line += "<p>"+description+"</p>";
-			line += "</div>";
-			
-			html += line;
-		}
-		document.getElementById("rss-reader").innerHTML = html;	
+		document.getElementById("rss-reader").innerHTML = "";
+		appendNewsItems(newsFeed);
 	}
 
 	// Handlers
 
 	function filterChangeHandler(event) {
-		var hello = 'hello';
+		if (event.target.checked) {
+			addSportData(sport_enum[event.target.value]);
+		} else {
+			removeSportData(sport_enum[event.target.value]);
+		}
 	}
-
+	
 });
+
+// helpers
+function getKeyByValue(obj, value) {
+	return Object.keys(obj).find(key => obj[key] == value);
+}
