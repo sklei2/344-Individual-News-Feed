@@ -21,13 +21,9 @@ class newsItem {
 
 class Database {
 
-	constructor(filename) {
+	constructor(filename, data) {
 		this.filename = filename;
-		this.data = null;
-
-		$.get('getAll.php', {file: filename}, function(data) {
-			this.data = JSON.parse(data);
-		});
+		this.data = data;
 	}
 
 	getUserFavorites(username) {
@@ -49,7 +45,7 @@ window.addEventListener('load', function() {
 	
 	// Setup our variables data
 	var newsFeed = [];
-	var database = new Database('database.json');
+	var database = createDatabase('database.json');
 	var username = null;
 	var favorites = [];
 	var viewedFavorites = [];
@@ -305,6 +301,13 @@ window.addEventListener('load', function() {
 			favorites = database.getUserFavorites(username);
 			resetNewsFeed();
 		}
+	}
+
+	// helpers
+	function createDatabase(filename) {
+		$.get('getAll.php', {file: filename}, function(data) {
+			return new Database(filename, JSON.parse(data));
+		});
 	}
 });
 
