@@ -39,7 +39,9 @@ window.addEventListener('load', function() {
 	}
 
 	// first let's check to see if the cookie has last visit
-	if (document.cookie) {
+	var lastvisit = readCookie('lastvisit')
+	if (lastvisit) {
+		var timeBetween = Date.now() - lastvisit;
 		
 	}
 	document.cookie = "lastvisit=" + Date.now().toString() + "; path=/"; // init cookie
@@ -273,6 +275,18 @@ window.addEventListener('load', function() {
 				checkboxes[key].checked = true;
 			}
 		}
+	}
+
+	function readCookie(name) {
+		if (document.cookie) {
+			var cookies = document.cookie.split(';');
+			for (var i = 0 ; i < cookies.length; i++ ) {
+				var keyValue = cookies[i].split('=');
+				if (keyValue[0] == name) {
+					return keyValue[1];
+				}
+			}	
+		}		
 	}
 });
 
