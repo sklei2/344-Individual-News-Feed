@@ -25,7 +25,7 @@ class Database {
 		this.filename = filename;
 		this.data = null;
 
-		$.get('getAll.php', {file: filename}).done(function(data) {
+		$.get('getAll.php', {file: filename}, function(data) {
 			this.data = JSON.parse(data);
 		});
 	}
