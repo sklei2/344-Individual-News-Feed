@@ -19,10 +19,26 @@ class newsItem {
 	}
 }
 
+class Database {
+
+	constructor(filename) {
+		this.filename = filename;
+
+		$.getJSON(filename, function(data) {
+			this.data = data;
+		});
+	}
+
+	getAll() {
+		var hello = 'hello';
+	}
+}
+
 window.addEventListener('load', function() {	
 	
 	// Setup our variables data
 	var newsFeed = [];
+	var database = null;
 	var favorites = [];
 	var viewedFavorites = [];
 	var espnUrl = "http://www.espn.com/espn/rss/";
@@ -267,7 +283,11 @@ window.addEventListener('load', function() {
 	}
 
 	function loginFormOnSubmitHandler(event) {
-		var hello = 'hello';
+		var usernameDiv = document.getElementById('username-input');
+		if (usernameDiv && usernameDiv.value) {
+			database = new Database('database.json');
+			var data = database.getAll();
+		}
 	}
 });
 
