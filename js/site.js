@@ -42,7 +42,7 @@ window.addEventListener('load', function() {
 	var lastvisit = readCookie('lastvisit')
 	if (lastvisit) {
 		var timeBetween = Date.now() - lastvisit;
-		
+
 	}
 	document.cookie = "lastvisit=" + Date.now().toString() + "; path=/"; // init cookie
 
@@ -282,7 +282,7 @@ window.addEventListener('load', function() {
 			var cookies = document.cookie.split(';');
 			for (var i = 0 ; i < cookies.length; i++ ) {
 				var keyValue = cookies[i].split('=');
-				if (keyValue[0] == name) {
+				if (keyValue[0].trim() == name) {
 					return keyValue[1];
 				}
 			}	
