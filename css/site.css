@@ -17,6 +17,7 @@ footer {
 
 label {
 	font-weight: bold;
+	width:56%;
 }
 
 .content {
@@ -87,12 +88,22 @@ label {
 	display: inline-block;
 }
 
+.fa-star-o:hover {
+	color: orange;
+}
+.selected {
+		color: orange;
+}
+
 #left-space-push {
 	border:none;
 }
 
 #rss-container {
-	width: 65%;
-	max-height: 600px;
+	width: 65%;	
+}
+
+#rss-reader {
 	overflow-y: scroll;
+	max-height: 600px;
 }
