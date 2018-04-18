@@ -42,7 +42,8 @@ window.addEventListener('load', function() {
 	if (document.cookie) {
 		
 	}
-	document.cooke = "lastvisit=" Date.now();
+	document.cookie = "lastvisit=" + Date.now().toString() + "; path=/"; // init cookie
+
 	// Setup the initial data to read all the RSS feeds
 	resetNewsFeed();
 	
@@ -53,9 +54,6 @@ window.addEventListener('load', function() {
 			tabs[key].addEventListener('click', tabOnClickHandler);	
 		}		
 	}
-
-	var loginForm = document.getElementById('login-nav');
-	loginForm.addEventListener('submit', loginFormOnSubmitHandler);
 
 	// RSS Handlers
 
@@ -275,22 +273,6 @@ window.addEventListener('load', function() {
 				checkboxes[key].checked = true;
 			}
 		}
-	}
-
-	function loginFormOnSubmitHandler(event) {
-		var usernameDiv = document.getElementById('username-input');
-		if (usernameDiv && usernameDiv.value) {
-			username = usernameDiv.value;
-			favorites = database.getUserFavorites(username);
-			resetNewsFeed();
-		}
-	}
-
-	// helpers
-	function createDatabase(filename) {
-		$.get('getAll.php', {file: filename}, function(data) {
-			database = new Database(filename, JSON.parse(data));
-		});
 	}
 });
 
