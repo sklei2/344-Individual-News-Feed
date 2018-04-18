@@ -1,3 +1,6 @@
 {
-	"users": []
+	"users": [{
+		"username": "example1",
+		"favorites": []
+	}]
 }
