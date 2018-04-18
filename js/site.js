@@ -103,7 +103,7 @@ window.addEventListener('load', function() {
 			var item = items[i];
 
 			var itemDiv = document.createElement('div');
-			itemDiv.id = "item_" + i;
+			itemDiv.id = i;
 			itemDiv.classList.add('item');
 
 			var sportImage = document.createElement('img');
@@ -115,22 +115,26 @@ window.addEventListener('load', function() {
 			title.innerText = item.title;
 			itemDiv.appendChild(title);
 
-			var text = document.createElement('p');
+			var description = document.createElement('p');
+			description.innerText = item.description;
+			itemDiv.appendChild(description);
+
+			var dateText = document.createElement('p');
 			var italicText = document.createElement('i');
 			italicText.innerText = item.pubDate.toLocaleString();
 			var link = document.createElement('a');
 			link.href = item.link;
 			link.target = '_blank';
 			link.text = 'See original';
-			text.appendChild(italicText);
-			text.appendChild(link)
-			itemDiv.appendChild(text);
+			dateText.appendChild(italicText);
+			dateText.innerText = dateText.innerText + ' - ';
+			dateText.appendChild(link)
+			itemDiv.appendChild(dateText);
 
 
 			var favoriteStar = document.createElement('span');
 			favoriteStar.classList.add('fa', 'fa-star-o');
 			favoriteStar.addEventListener('click', favoriteOnClickHandler);
-			favoriteStar.id = 'favorite_' + i;
 			itemDiv.appendChild(favoriteStar);
 
 			rssReader.appendChild(itemDiv);
@@ -159,16 +163,18 @@ window.addEventListener('load', function() {
 	}
 
 	function favoriteOnClickHandler(event) {
+		var index = parseInt(event.target.parentElement.id);
+		var item = newsFeed[index];
 		if(event.target.classList.contains('selected')) {
 			// we're deselecting the favorite
 			event.target.classList.remove('selected');
+			favorites.splice(favorites.indexOf(item), 1);
 		} else {
-			// Else we're adding it to our favorites
+			// Else we're adding it to our favorites			
 			event.target.classList.add('selected');
+			favorites.push(item);
 		}
 	}
-
-	// Helpers
 
 });
 
