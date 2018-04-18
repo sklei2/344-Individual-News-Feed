@@ -38,7 +38,7 @@ window.addEventListener('load', function() {
 	
 	// Setup our variables data
 	var newsFeed = [];
-	var database = null;
+	var database = new Database('database.json');
 	var favorites = [];
 	var viewedFavorites = [];
 	var espnUrl = "http://www.espn.com/espn/rss/";
@@ -285,8 +285,7 @@ window.addEventListener('load', function() {
 	function loginFormOnSubmitHandler(event) {
 		var usernameDiv = document.getElementById('username-input');
 		if (usernameDiv && usernameDiv.value) {
-			database = new Database('database.json');
-			var data = database.getAll();
+			
 		}
 	}
 });
