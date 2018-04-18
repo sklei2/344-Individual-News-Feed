@@ -29,8 +29,18 @@ class Database {
 		});
 	}
 
-	getAll() {
-		var hello = 'hello';
+	getUserFavorites(username) {
+		var user = this.data.users.find(user.username === username);
+		if (user) {
+			return user.favorites;
+		}
+	}
+
+	addUserFavorite(username, item) {
+		var user = this.data.users.find(user.username === username);
+		if (user) {
+			user.favorites.push(item);
+		}
 	}
 }
 
@@ -39,6 +49,7 @@ window.addEventListener('load', function() {
 	// Setup our variables data
 	var newsFeed = [];
 	var database = new Database('database.json');
+	var username = null;
 	var favorites = [];
 	var viewedFavorites = [];
 	var espnUrl = "http://www.espn.com/espn/rss/";
@@ -69,7 +80,7 @@ window.addEventListener('load', function() {
 	// RSS Handlers
 
 	function resetNewsFeed() {
-		var finishedSports = {};
+		var finishedSports = {};		
 
 		function readRSSCallback(sport) {
 			finishedSports[sport] = 1;
@@ -84,7 +95,11 @@ window.addEventListener('load', function() {
 			checkbox.checked = true;
 
 			loadRSSFeed(espnUrl + key + afterSportUrl, sport_enum[key], readRSSCallback)
-		}	
+		}
+
+		// make sure the right tab is selected
+		document.getElementById('news').classList.add('active');
+		document.getElementById('favorites').classList.remove('active');
 	}
 
 	function loadRSSFeed(url, sport, callback) {
@@ -285,7 +300,9 @@ window.addEventListener('load', function() {
 	function loginFormOnSubmitHandler(event) {
 		var usernameDiv = document.getElementById('username-input');
 		if (usernameDiv && usernameDiv.value) {
-			
+			username = usernameDiv.value;
+			favorites = database.getUserFavorites(username);
+			resetNewsFeed();
 		}
 	}
 });
