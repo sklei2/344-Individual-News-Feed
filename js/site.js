@@ -15,6 +15,7 @@ class newsItem {
 		this.pubDate = new Date(xmlItem.querySelector("pubDate").firstChild.nodeValue);
 		this.sport = sport;
 		this.sportString = getKeyByValue(sport_enum, sport);
+		this.isFavorite = false;
 	}
 }
 
@@ -23,8 +24,10 @@ window.addEventListener('load', function() {
 	// Setup our variables data
 	var newsFeed = [];
 	var favorites = [];
+	var viewedFavorites = [];
 	var espnUrl = "http://www.espn.com/espn/rss/";
 	var afterSportUrl = "/news"
+	var feed = "news";
 
 	var checkboxes = {
 		MLB: document.getElementById("mlb-checkbox"),
@@ -34,24 +37,34 @@ window.addEventListener('load', function() {
 	}
 
 	// Setup the initial data to read all the RSS feeds
-	var finishedSports = {};
-
-	function readRSSCallback(sport) {
-		finishedSports[sport] = 1;
-		if (Object.keys(finishedSports).length >= Object.keys(sport_enum).length) {
-			loadNewsFeed();
-		}
-	}
-
-	for (key in checkboxes) {
-		var checkbox = checkboxes[key];
-		checkbox.addEventListener("change", filterChangeHandler);
-		checkbox.checked = true;
-
-		loadRSSFeed(espnUrl + key + afterSportUrl, sport_enum[key], readRSSCallback)
-	}
+	resetNewsFeed();
 	
+	// Setup Click handlers
+	var tabs = document.querySelectorAll('.tab');
+	for (var key in tabs) {
+		tabs[key].addEventListener('click', tabOnClickHandler);
+	}
+
 	// RSS Handlers
+
+	function resetNewsFeed() {
+		var finishedSports = {};
+
+		function readRSSCallback(sport) {
+			finishedSports[sport] = 1;
+			if (Object.keys(finishedSports).length >= Object.keys(sport_enum).length) {
+				loadNewsFeed();
+			}
+		}
+
+		for (key in checkboxes) {
+			var checkbox = checkboxes[key];
+			checkbox.addEventListener("change", filterChangeHandler);
+			checkbox.checked = true;
+
+			loadRSSFeed(espnUrl + key + afterSportUrl, sport_enum[key], readRSSCallback)
+		}	
+	}
 
 	function loadRSSFeed(url, sport, callback) {
 		document.getElementById("rss-reader").innerText = "Loading RSS Feed";
@@ -74,7 +87,7 @@ window.addEventListener('load', function() {
 		}
 	}
 
-	function addSportData(sport) {
+	function addNewsSportData(sport) {
 		var sportString = getKeyByValue(sport_enum, sport);
 		var url = espnUrl + sportString + afterSportUrl;
 		loadRSSFeed(url, sport, function() {
@@ -82,17 +95,40 @@ window.addEventListener('load', function() {
 		});
 	}
 
-	function removeSportData(sport) {
-		newsFeed = newsFeed.filter(item => item.sport != sport);
-		loadNewsFeed();
-	}
-
-	function addNewsItem(item) {
-		newsFeed.push(item);
+	function addFavoriteSportData(sport) {
+		var newFavorites = favorites.filter(item => item.sport === sport);
+		viewedFavorites = viewedFavorites.concat(newFavorites);
 		function comparerFunction(newsItemA, newsItemB) {
 			return newsItemB.pubDate - newsItemA.pubDate;
 		}
-		newsFeed.sort(comparerFunction);
+		viewedFavorites.sort(comparerFunction);
+		loadFavorites();
+	}
+
+	function removeNewsSportData(sport) {
+		newsFeed = newsFeed.filter(item => item.sport != sport);
+		loadNewsFeed();			
+	}
+
+	function removeFavoritesSportData(sport) {
+		viewedFavorites = viewedFavorites.filter(item => item.sport != sport);
+		loadFavorites();
+	}
+
+	function addNewsItem(item) {
+		addItem(newsFeed, item);
+	}
+
+	function addFavoriteItem(item){
+		addItem(favorites, item);
+	}
+
+	function addItem(array, item) {
+		array.push(item);
+		function comparerFunction(newsItemA, newsItemB) {
+			return newsItemB.pubDate - newsItemA.pubDate;
+		}
+		array.sort(comparerFunction);	
 	}
 
 	// Drawing HTML
@@ -134,6 +170,9 @@ window.addEventListener('load', function() {
 
 			var favoriteStar = document.createElement('span');
 			favoriteStar.classList.add('fa', 'fa-star-o');
+			if (item.isFavorite) {
+				favoriteStar.classList.add('selected');
+			}
 			favoriteStar.addEventListener('click', favoriteOnClickHandler);
 			itemDiv.appendChild(favoriteStar);
 
@@ -148,18 +187,35 @@ window.addEventListener('load', function() {
 			appendNewsItems(newsFeed);	
 		} else {
 			rssReader.innerHTML = '<h2 style="text-align: center;">No Stories to Show</h2>';
+		}		
+	}
+
+	function loadFavorites() {
+		var rssReader = document.getElementById("rss-reader");
+		if (viewedFavorites.length > 0) {
+			rssReader.innerHTML = "";
+			appendNewsItems(viewedFavorites);
+		} else {
+			rssReader.innerHTML = '<h2 style="text-align: center;"> No Favorites to Show</h2>';
 		}
-		
 	}
 
 	// Handlers
 
-	function filterChangeHandler(event) {
-		if (event.target.checked) {
-			addSportData(sport_enum[event.target.value]);
+	function filterChangeHandler(event) {		
+		if (feed === 'news') {
+			if (event.target.checked) {
+				addNewsSportData(sport_enum[event.target.value]);
+			} else {
+				removeNewsSportData(sport_enum[event.target.value]);
+			}
 		} else {
-			removeSportData(sport_enum[event.target.value]);
-		}
+			if (event.target.checked) {
+				addFavoriteSportData(sport_enum[event.target.value]);
+			} else {
+				removeFavoritesSportData(sport_enum[event.target.value]);
+			}
+		}	
 	}
 
 	function favoriteOnClickHandler(event) {
@@ -167,15 +223,41 @@ window.addEventListener('load', function() {
 		var item = newsFeed[index];
 		if(event.target.classList.contains('selected')) {
 			// we're deselecting the favorite
-			event.target.classList.remove('selected');
+			event.target.classList.remove('selected');			
 			favorites.splice(favorites.indexOf(item), 1);
+			item.isFavorite = false;
+			if (feed === 'favorites') {
+				loadFavorites();
+			}
 		} else {
 			// Else we're adding it to our favorites			
 			event.target.classList.add('selected');
-			favorites.push(item);
+			addFavoriteItem(item);
+			item.isFavorite = true;
 		}
 	}
 
+	function tabOnClickHandler(event) {		
+		if (!event.target.classList.contains('active')) {
+			var tabs = document.getElementsByClassName('tab-container')[0];
+			for (var i = 0; i < tabs.children.length; i++) {
+				tabs.children[i].classList.remove('active');
+			}
+			feed = event.target.id;
+			event.target.classList.add('active');				
+			// we load different items based on where we're going
+			if (feed === 'favorites') {
+				viewedFavorites = favorites;
+				loadFavorites();	
+			} else {
+				resetNewsFeed();				
+			}
+			// reset checkboxes
+			for (var key in checkboxes) {
+				checkboxes[key].checked = true;
+			}
+		}
+	}
 });
 
 // helpers
