@@ -46,10 +46,10 @@ window.addEventListener('load', function() {
 	var feed = "news";
 
 	var checkboxes = {
-		MLB: document.getElementById("mlb-checkbox"),
-		NBA: document.getElementById("nba-checkbox"),
-		NFL: document.getElementById("nfl-checkbox"),
-		NHL: document.getElementById("nhl-checkbox"),
+		mlb: document.getElementById("mlb-checkbox"),
+		nba: document.getElementById("nba-checkbox"),
+		nfl: document.getElementById("nfl-checkbox"),
+		nhl: document.getElementById("nhl-checkbox"),
 	}
 
 	// Setup the initial data to read all the RSS feeds
