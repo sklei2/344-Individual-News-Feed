@@ -19,28 +19,6 @@ class newsItem {
 	}
 }
 
-class Database {
-
-	constructor(filename, data) {
-		this.filename = filename;
-		this.data = data;
-	}
-
-	getUserFavorites(username) {
-		var user = this.data.users.find(user.username === username);
-		if (user) {
-			return user.favorites;
-		}
-	}
-
-	addUserFavorite(username, item) {
-		var user = this.data.users.find(user.username === username);
-		if (user) {
-			user.favorites.push(item);
-		}
-	}
-}
-
 window.addEventListener('load', function() {	
 	
 	// Setup our variables data
@@ -59,9 +37,6 @@ window.addEventListener('load', function() {
 		nfl: document.getElementById("nfl-checkbox"),
 		nhl: document.getElementById("nhl-checkbox"),
 	}
-
-	// create our database object
-	createDatabase('database.json');
 
 	// Setup the initial data to read all the RSS feeds
 	resetNewsFeed();
