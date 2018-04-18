@@ -38,6 +38,11 @@ window.addEventListener('load', function() {
 		nhl: document.getElementById("nhl-checkbox"),
 	}
 
+	// first let's check to see if the cookie has last visit
+	if (document.cookie) {
+		
+	}
+	document.cooke = "lastvisit=" Date.now();
 	// Setup the initial data to read all the RSS feeds
 	resetNewsFeed();
 	
