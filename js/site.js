@@ -39,11 +39,16 @@ window.addEventListener('load', function() {
 	// Setup the initial data to read all the RSS feeds
 	resetNewsFeed();
 	
-	// Setup Click handlers
+	// Setup event handlers
 	var tabs = document.querySelectorAll('.tab');
 	for (var key in tabs) {
-		tabs[key].addEventListener('click', tabOnClickHandler);
+		if (tabs[key].addEventListener) {
+			tabs[key].addEventListener('click', tabOnClickHandler);	
+		}		
 	}
+
+	var loginForm = document.getElementById('login-nav');
+	loginForm.addEventListener('submit', loginFormOnSubmitHandler);
 
 	// RSS Handlers
 
@@ -79,6 +84,8 @@ window.addEventListener('load', function() {
 		});
 	}
 	
+	// Setup the data for view
+
 	function loadRSSData(data, sport) {
 		var items = data.querySelectorAll("item");
 		for (var i = 0; i < items.length; i++) {
@@ -257,6 +264,10 @@ window.addEventListener('load', function() {
 				checkboxes[key].checked = true;
 			}
 		}
+	}
+
+	function loginFormOnSubmitHandler(event) {
+		var hello = 'hello';
 	}
 });
 
