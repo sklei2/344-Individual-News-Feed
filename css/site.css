@@ -3,13 +3,13 @@ body {
 }
 
 nav {
-	padding-top: 1px;
-	padding-bottom: 1px;
-	padding-left: 1%;
-	padding-right:1%;
 	color: #eeeeee;
 	background-color: #343a40;
 }
+	.nav  a {
+		text-decoration: none;
+		color: #eeeeee;
+	}
 
 footer {
 	margin-top: 5%;
