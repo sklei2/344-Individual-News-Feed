@@ -45,7 +45,7 @@ window.addEventListener('load', function() {
 	
 	// Setup our variables data
 	var newsFeed = [];
-	var database = createDatabase('database.json');
+	var database = null;
 	var username = null;
 	var favorites = [];
 	var viewedFavorites = [];
@@ -59,6 +59,9 @@ window.addEventListener('load', function() {
 		nfl: document.getElementById("nfl-checkbox"),
 		nhl: document.getElementById("nhl-checkbox"),
 	}
+
+	// create our database object
+	createDatabase('database.json');
 
 	// Setup the initial data to read all the RSS feeds
 	resetNewsFeed();
@@ -306,7 +309,7 @@ window.addEventListener('load', function() {
 	// helpers
 	function createDatabase(filename) {
 		$.get('getAll.php', {file: filename}, function(data) {
-			return new Database(filename, JSON.parse(data));
+			database = new Database(filename, JSON.parse(data));
 		});
 	}
 });
