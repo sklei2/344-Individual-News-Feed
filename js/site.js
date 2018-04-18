@@ -23,6 +23,7 @@ class Database {
 
 	constructor(filename) {
 		this.filename = filename;
+		this.data = null;
 
 		$.get('getAll.php', {file: filename}).done(function(data) {
 			this.data = JSON.parse(data);
