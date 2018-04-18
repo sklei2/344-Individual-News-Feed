@@ -22,6 +22,7 @@ window.addEventListener('load', function() {
 	
 	// Setup our variables data
 	var newsFeed = [];
+	var favorites = [];
 	var espnUrl = "http://www.espn.com/espn/rss/";
 	var afterSportUrl = "/news"
 
@@ -97,20 +98,43 @@ window.addEventListener('load', function() {
 	// Drawing HTML
 
 	function appendNewsItems(items) {
-		var html = document.getElementById("rss-reader").innerHTML
+		var rssReader = document.getElementById("rss-reader")
 		for (var i = 0; i < items.length; i++) {
 			var item = items[i];
-			var line = '<div class="item">';
-			line += "<img src=img/logo_" + item.sportString + ".png class=logo-img>" 
-			line += "<h2>" + item.title + "</h2>";
-			line += '<p><i>'+ item.pubDate.toLocaleString() +'</i> - <a href="'+ item.link + '" target="_blank">See original</a></p>';
-			//title and description are always the same (for some reason) so I'm only including one
-			//line += "<p>"+description+"</p>";
-			line += "</div>";
-			
-			html += line;
-		}
-		document.getElementById("rss-reader").innerHTML = html;
+
+			var itemDiv = document.createElement('div');
+			itemDiv.id = "item_" + i;
+			itemDiv.classList.add('item');
+
+			var sportImage = document.createElement('img');
+			sportImage.src = "img/logo_" + item.sportString + ".png";
+			sportImage.classList.add('logo-img');
+			itemDiv.appendChild(sportImage);
+
+			var title = document.createElement('h2');
+			title.innerText = item.title;
+			itemDiv.appendChild(title);
+
+			var text = document.createElement('p');
+			var italicText = document.createElement('i');
+			italicText.innerText = item.pubDate.toLocaleString();
+			var link = document.createElement('a');
+			link.href = item.link;
+			link.target = '_blank';
+			link.text = 'See original';
+			text.appendChild(italicText);
+			text.appendChild(link)
+			itemDiv.appendChild(text);
+
+
+			var favoriteStar = document.createElement('span');
+			favoriteStar.classList.add('fa', 'fa-star-o');
+			favoriteStar.addEventListener('click', favoriteOnClickHandler);
+			favoriteStar.id = 'favorite_' + i;
+			itemDiv.appendChild(favoriteStar);
+
+			rssReader.appendChild(itemDiv);
+		}		
 	}
 
 	function loadNewsFeed() {
@@ -131,6 +155,16 @@ window.addEventListener('load', function() {
 			addSportData(sport_enum[event.target.value]);
 		} else {
 			removeSportData(sport_enum[event.target.value]);
+		}
+	}
+
+	function favoriteOnClickHandler(event) {
+		if(event.target.classList.contains('selected')) {
+			// we're deselecting the favorite
+			event.target.classList.remove('selected');
+		} else {
+			// Else we're adding it to our favorites
+			event.target.classList.add('selected');
 		}
 	}
 
