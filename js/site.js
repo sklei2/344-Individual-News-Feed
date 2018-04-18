@@ -1,10 +1,10 @@
 
 // enum variable for our sports
 var sport_enum = Object.freeze({
-	MLB: 1,
-	NBA: 2,
-	NFL: 3,
-	NHL: 4,
+	mlb: 1,
+	nba: 2,
+	nfl: 3,
+	nhl: 4,
 });
 
 class newsItem {
