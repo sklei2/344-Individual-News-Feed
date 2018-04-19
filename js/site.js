@@ -41,8 +41,8 @@ window.addEventListener('load', function() {
 	// first let's check to see if the cookie has last visit
 	var lastvisit = readCookie('lastvisit')
 	if (lastvisit) {
-		var timeBetween = Date.now() - lastvisit;
-
+		var date = new Date(parseInt(lastvisit));
+		document.getElementById('last-visit').innerText = "You're last visit was on: " + date.toLocaleString();
 	}
 	document.cookie = "lastvisit=" + Date.now().toString() + "; path=/"; // init cookie
 
